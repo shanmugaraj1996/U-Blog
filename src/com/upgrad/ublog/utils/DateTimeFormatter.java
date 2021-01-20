@@ -10,4 +10,17 @@ import java.time.LocalDateTime;
 
 public class DateTimeFormatter {
 
+    public static String format(LocalDateTime localDateTime){
+
+        int day = localDateTime.getDayOfMonth();
+        int month = localDateTime.getMonthValue();
+        int year = localDateTime.getYear();
+        int hour = localDateTime.getHour();
+        int minute = localDateTime.getMinute();
+        int second = localDateTime.getSecond();
+
+        return day + "-" + month + "-" + year + " " + hour + ":" + minute + ":" + second;
+
+    }
+
 }
