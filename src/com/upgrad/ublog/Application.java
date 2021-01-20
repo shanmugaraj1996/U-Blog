@@ -85,8 +85,21 @@ public class Application {
         System.out.println("********Login********");
         System.out.println("*********************");
 
+        User user = getEmailFromUser();
 
+        try {
+            if (userService.login(user)) {
+                System.out.println("You are logged in.");
+                isLoggedIn = true;
+                loggedInEmailId = user.getEmailId();
+            }
+        } catch (Exception e) {
+            //code to execute when account object was null
+            System.out.println(e.getMessage());
+        }
     }
+
+
 
     /**
      * TODO 3.18. Implement the register() method. This method should prompt the user for the
@@ -108,6 +121,18 @@ public class Application {
         System.out.println("******Register*******");
         System.out.println("*********************");
 
+        User user = getEmailFromUser();
+
+        try {
+            if (userService.register(user)) {
+                System.out.println("You are logged in.");
+                isLoggedIn = true;
+                loggedInEmailId = user.getEmailId();
+            }
+        } catch (Exception e) {
+            //code to execute when user object was null
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -152,6 +177,21 @@ public class Application {
         System.out.println("*****Create Post*****");
         System.out.println("*********************");
 
+        Post post = new Post();
+        post.setPostId(1);
+        post.setEmailId(loggedInEmailId);
+        post.setDescription("provided by user");
+        post.setTitle("provided by user");
+        post.setTag("provided by user");
+        post.setTimestamp(LocalDateTime.now());
+
+        try {
+            postService.create(post);
+        } catch (SQLException e) {
+            System.out.println("SQL grammar is not right");
+        } catch (Exception e) {
+            System.out.println("exception occurred");
+        }
 
     }
 

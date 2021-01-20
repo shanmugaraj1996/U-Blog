@@ -1,5 +1,14 @@
 package com.upgrad.ublog.services;
 
+import com.upgrad.ublog.dao.DAOFactory;
+import com.upgrad.ublog.dao.UserDAO;
+import com.upgrad.ublog.dtos.User;
+import com.upgrad.ublog.exceptions.IncorrectPasswordException;
+import com.upgrad.ublog.exceptions.UserAlreadyRegisteredException;
+import com.upgrad.ublog.exceptions.UserNotFoundException;
+
+import java.sql.SQLException;
+
 /**
  * TODO: 3.10. Implement the UserService interface and implement this class using the Singleton pattern.
  *  (Hint: Should have a private no-arg Constructor, a private static instance attribute of type
@@ -27,6 +36,62 @@ package com.upgrad.ublog.services;
  *  with a message "Some unexpected error occurred!"
  */
 
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
+    private static UserServiceImpl instance = new UserServiceImpl();
 
+    private DAOFactory daoFactory;
+    private UserDAO userDAO;
+
+    private UserServiceImpl() {
+        daoFactory = new DAOFactory();
+        userDAO = daoFactory.getUserDAO();
+
+    }
+
+    public boolean login(User user) throws Exception {
+        if (user == null) {
+            throw new NullPointerException("User object was null");
+        }
+
+        User temp = null;
+        try {
+            temp = userDAO.findByEmailId(user.getEmailId());
+        } catch (SQLException e) {
+            throw new Exception("Some unexpected exception occurred.");
+        }
+
+        if (temp == null) {
+            throw new UserNotFoundException("User no doesn't exist.");
+        } else if (!temp.getPassword().equals(user.getPassword())) {
+            throw new IncorrectPasswordException("Password is not correct.");
+        } else {
+            return true;
+        }
+    }
+
+    public boolean register(User user) throws Exception {
+        if (user == null) {
+            throw new NullPointerException("User object was null");
+        }
+        User temp = null;
+        try {
+            temp = userDAO.findByEmailId(user.getEmailId());
+        } catch (SQLException e) {
+            throw new Exception("Some unexpected exception occurred");
+        }
+
+        if (temp != null) {
+            throw new UserAlreadyRegisteredException("User no already registered.");
+        } else {
+            userDAO.create(user);
+            return true;
+        }
+    }
+
+    public static UserServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new UserServiceImpl();
+        }
+        return instance;
+    }
 }

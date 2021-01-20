@@ -32,6 +32,14 @@ package com.upgrad.ublog.dao;
  *  without setting any of its attributes.
  */
 
+import com.upgrad.ublog.db.Database;
+import com.upgrad.ublog.dtos.Post;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
 /**
  * TODO: 4.8. Implement findAllTags() method which returns a list of all tags in the POST table.
  * TODO: 4.9. Implement findByTag() method which takes "tag" as an input argument and returns all the
@@ -39,5 +47,62 @@ package com.upgrad.ublog.dao;
  */
 
 public class PostDAOImpl {
+
+    private static PostDAOImpl instance;
+
+    private PostDAOImpl() {
+    }
+
+    public static PostDAOImpl getInstance() {
+        if(instance == null) {
+            instance = new PostDAOImpl();
+        }
+        return instance;
+    }
+
+
+
+
+    public Post create(Post post) throws SQLException {
+        Connection connection = Database.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "INSERT INTO account (postId, emailId, tag, title, description, timestamp) VALUES (" +
+                post.getPostId() + ", '" +
+                post.getEmailId() + "', " +
+                post.getTag()+ ", '" +
+                post.getTitle() + "', "+ ", '" +
+                post.getDescription() + "', "+ ", '" +
+                post.getTimestamp() +
+                ")";
+        statement.executeUpdate(sql);
+        return post;
+
+
+    }
+
+
+    public List<Post> findByEmailId(String emailId) throws SQLException {
+        return null;
+    }
+
+
+    public List<Post> findByTag(String tag) throws SQLException {
+        return null;
+    }
+
+    public Post findByPostId(int postId) throws SQLException {
+        return null;
+    }
+
+    public List<String> findAllTags() {
+        return null;
+
+    }
+
+
+    public boolean deleteByPostId(int postId) throws SQLException {
+        return false;
+    }
+
 
 }
