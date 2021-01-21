@@ -1,5 +1,6 @@
 package com.upgrad.ublog.dtos;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 /**
@@ -17,21 +18,24 @@ import java.time.LocalDateTime;
 
 public class Post {
 
-        private int postId;
-        private String emailId;
-        private String tag;
+    private int postId;
+    private String emailId;
+    private String tag;
+    private String title;
+    private String description;
+    private String timestamp;
 
-    public Post(int postId, String emailId, String tag, String title, String description, LocalDateTime timestamp) {
+    public Post(){
+
+    }
+
+    public Post(int postId, String emailId, String tag, String title, String description, String timestamp){
         this.postId = postId;
         this.emailId = emailId;
         this.tag = tag;
         this.title = title;
         this.description = description;
         this.timestamp = timestamp;
-    }
-
-    public Post() {
-
     }
 
     public int getPostId() {
@@ -74,7 +78,7 @@ public class Post {
         this.description = description;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
@@ -82,11 +86,7 @@ public class Post {
         this.timestamp = timestamp;
     }
 
-    private String title;
-        private String description;
-        private LocalDateTime timestamp;
-
-   @Override
+    @Override
     public String toString() {
         return "Post{" +
                 "postId=" + postId +
@@ -98,20 +98,20 @@ public class Post {
                 '}';
     }
 
-    public static void main(String[] args) {
-        Post post = new Post();
-        post.setPostId(1);
-        post.setEmailId("dummy@dummy.com");
-        post.setTag("tag");
-        post.setTitle("title");
-        post.setDescription("Description");
-        post.setTimestamp(LocalDateTime.now());
-
-        System.out.println(post);
-
+//    public static void main(String[] args) {
+//        Post post = new Post();
+//        post.setPostId(1);
+//        post.setEmailId("dummy@dummy.com");
+//        post.setTag("tag");
+//        post.setTitle("title");
+//        post.setDescription("Description");
+//        post.setTimestamp(LocalDateTime.now());
+//
+//        System.out.println(post);
+//
 //        /**
 //         * Your output should be similar to as shown below.
 //         * Post{postId=1, emailId='dummy@dummy.com', tag='tag', title='title', description='Description', timestamp=2020-05-22T21:01:34.483363800}
 //         */
-    }
+//    }
 }

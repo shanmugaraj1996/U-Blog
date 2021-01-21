@@ -36,62 +36,69 @@ import java.sql.SQLException;
  *  with a message "Some unexpected error occurred!"
  */
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
+
     private static UserServiceImpl instance = new UserServiceImpl();
+    private DAOFactory daoFactory = new DAOFactory();
+    private UserDAO userDAO = daoFactory.getUserDAD();
 
-    private DAOFactory daoFactory;
-    private UserDAO userDAO;
-
-    private UserServiceImpl() {
-        daoFactory = new DAOFactory();
-        userDAO = daoFactory.getUserDAO();
+    private UserServiceImpl(){
 
     }
 
+    public static UserServiceImpl getInstance(){
+        if(instance == null){
+            return new UserServiceImpl();
+        }
+        return instance;
+    }
+
+    @Override
     public boolean login(User user) throws Exception {
+
         if (user == null) {
             throw new NullPointerException("User object was null");
         }
 
-        User temp = null;
+        User temp;
+
         try {
             temp = userDAO.findByEmailId(user.getEmailId());
         } catch (SQLException e) {
-            throw new Exception("Some unexpected exception occurred.");
+            e.printStackTrace();
+            throw new Exception("Some unexpected exception occurred!");
         }
 
         if (temp == null) {
-            throw new UserNotFoundException("User no doesn't exist.");
+            throw new UserNotFoundException("No user registered with the given email address!");
         } else if (!temp.getPassword().equals(user.getPassword())) {
             throw new IncorrectPasswordException("Password is not correct.");
         } else {
             return true;
         }
+
     }
 
+    @Override
     public boolean register(User user) throws Exception {
         if (user == null) {
             throw new NullPointerException("User object was null");
         }
-        User temp = null;
+
+        User temp;
+
         try {
             temp = userDAO.findByEmailId(user.getEmailId());
         } catch (SQLException e) {
-            throw new Exception("Some unexpected exception occurred");
+            e.printStackTrace();
+            throw new Exception ("Some unexpected exception occurred!");
         }
 
         if (temp != null) {
-            throw new UserAlreadyRegisteredException("User no already registered.");
+            throw new UserAlreadyRegisteredException("A user with this email address already exists!");
         } else {
             userDAO.create(user);
             return true;
         }
-    }
-
-    public static UserServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new UserServiceImpl();
-        }
-        return instance;
     }
 }

@@ -2,8 +2,12 @@ package com.upgrad.ublog.dao;
 
 import com.upgrad.ublog.db.Database;
 import com.upgrad.ublog.dtos.User;
+import com.upgrad.ublog.services.UserServiceImpl;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * TODO: 3.5. Implement the UserDAO interface and implement this class using the Singleton pattern.
@@ -17,78 +21,79 @@ import java.sql.*;
  *  argument. (Hint: You should get the connection using the Database class)
  */
 
-public class UserDAOImpl implements UserDAO {
-    private static UserDAOImpl instance;
+public class UserDAOImpl implements UserDAO{
 
-    public static UserDAOImpl getInstance() {
+    private static UserDAOImpl instance = new UserDAOImpl();
+
+    private UserDAOImpl(){
+
+    }
+
+    public static UserDAO getInstance() {
         if (instance == null) {
             instance = new UserDAOImpl();
         }
         return instance;
     }
-
-    private UserDAOImpl() {
-    }
-
+    
     @Override
     public User create(User user) throws SQLException {
+
         Connection connection = Database.getConnection();
 
-        // Statement statement = connection.createStatement();
-        // String sql = "INSERT INTO USER (userId, emailId, password) VALUES (" +
-        //         user.getUserId()+ ", '" +
-        //         user.getEmailId()+ "', '" +
-        //         user.getPassword() + "')";
-        // statement.executeUpdate(sql);
-        String sql = "INSERT INTO USER (userId, emailId, password) VALUES (?,?,?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, user.getUserId());
-        preparedStatement.setString(2, user.getEmailId());
-        preparedStatement.setString(3, user.getPassword());
-        preparedStatement.executeUpdate();
+        Statement statement = connection.createStatement();
+
+        String sql = "INSERT INTO user (userId, emailId, password) VALUES (" +
+                user.getUserId() + ", '" +
+                user.getEmailId() + "', '" +
+                user.getPassword()+
+                "')";
+
+        statement.executeUpdate(sql);
+
         return user;
     }
 
     @Override
     public User findByEmailId(String emailId) throws SQLException {
 
-
         Connection connection = Database.getConnection();
+
         Statement statement = connection.createStatement();
+
         String sql = "SELECT * FROM user WHERE emailId = '" + emailId + "'";
-        //System.out.println(connection);
+
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if (resultSet.next()) {
+        if(resultSet.next()){
             User user = new User();
+            user.setUserId(resultSet.getInt("userId"));
             user.setEmailId(resultSet.getString("emailId"));
             user.setPassword(resultSet.getString("password"));
-            user.setUserId(resultSet.getInt("userId"));
-
             return user;
-        } else {
-            return null;
         }
+        else
+            return null;
+
     }
 
 
-    public static void main(String[] args) {
-        try {
-            UserDAO userDAO = new UserDAOImpl();
-            User temp = new User();
-            temp.setUserId(1);
-            temp.setEmailId("temp@temp.temp");
-            temp.setPassword("temp");
-            userDAO.create(temp);
-            System.out.println(userDAO.findByEmailId("temp@temp.temp"));
-        } catch (Exception e) {
-            System.out.println("FAILED");
-            e.printStackTrace();
-        }
+//    public static void main(String[] args) {
+//        try {
+//            UserDAO userDAO = new UserDAOImpl();
+//            User temp = new User();
+//            temp.setUserId(1);
+//            temp.setEmailId("temp@temp.temp");
+//            temp.setPassword("temp");
+//            userDAO.create(temp);
+//            System.out.println(userDAO.findByEmailId("temp@temp.temp"));
+//        } catch (Exception e) {
+//            System.out.println("FAILED");
+//        }
+
         /**
          * Following should be the desired output of the main method.
-         //         * User{userId=11, emailId='temp@temp.temp', password='temp'}
-         //         */
+         * User{userId=1, emailId='temp@temp.temp', password='temp'}
+         */
 //    }
-    }
 }

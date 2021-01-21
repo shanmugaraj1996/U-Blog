@@ -53,7 +53,7 @@ public class PostDAOImpl implements PostDAO {
     private static PostDAOImpl instance = new PostDAOImpl();
 
     public static PostDAOImpl getInstance() {
-        if (instance == null) {
+        if(instance == null){
             instance = new PostDAOImpl();
         }
         return instance;
@@ -112,15 +112,15 @@ public class PostDAOImpl implements PostDAO {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-            Post post = new Post();
-            post.setPostId(resultSet.getInt("postId"));
-            post.setEmailId(resultSet.getString("emailId"));
-            post.setTag(resultSet.getString("tag"));
-            post.setTitle(resultSet.getString("title"));
-            post.setDescription(resultSet.getString("description"));
-            post.setTimestamp(resultSet.getString("timestamp"));
+                Post post = new Post();
+                post.setPostId(resultSet.getInt("postId"));
+                post.setEmailId(resultSet.getString("emailId"));
+                post.setTag(resultSet.getString("tag"));
+                post.setTitle(resultSet.getString("title"));
+                post.setDescription(resultSet.getString("description"));
+                post.setTimestamp(resultSet.getString("timestamp"));
 
-            tags.add(post);
+                tags.add(post);
         }
 
         return tags;
@@ -137,18 +137,18 @@ public class PostDAOImpl implements PostDAO {
 
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if (!resultSet.next()) {
+        if(!resultSet.next()){
             return null;
         }
 
-        do {
-            post.setPostId(resultSet.getInt("postId"));
-            post.setEmailId(resultSet.getString("emailId"));
-            post.setTag(resultSet.getString("tag"));
-            post.setTitle(resultSet.getString("title"));
-            post.setDescription(resultSet.getString("description"));
-            post.setTimestamp(resultSet.getString("timestamp"));
-        } while (resultSet.next());
+         do {
+             post.setPostId(resultSet.getInt("postId"));
+             post.setEmailId(resultSet.getString("emailId"));
+             post.setTag(resultSet.getString("tag"));
+             post.setTitle(resultSet.getString("title"));
+             post.setDescription(resultSet.getString("description"));
+             post.setTimestamp(resultSet.getString("timestamp"));
+            } while (resultSet.next());
 
         return post;
     }

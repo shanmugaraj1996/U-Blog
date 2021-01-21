@@ -14,44 +14,19 @@ package com.upgrad.ublog.dtos;
 
 public class User {
 
-
     private int userId;
     private String emailId;
     private String password;
+
+    public User(){
+
+    }
 
     public User(int userId, String emailId, String password) {
         this.userId = userId;
         this.emailId = emailId;
         this.password = password;
     }
-
-    public User() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", emailId='" + emailId + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
-    public static void main(String[] args) {
-        User user = new User();
-        user.setUserId(1);
-        user.setEmailId("dummy@dummy.com");
-        user.setPassword("password");
-
-        System.out.println(user);
-
-//        /**
-//         * Your output should be similar to this.
-//         * User{userId=1, emailId='dummy@dummy.com', password='password'}
-//         */
-    }
-
 
     public int getUserId() {
         return userId;
@@ -76,4 +51,27 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+        @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", emailId='" + emailId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+//    public static void main(String[] args) {
+//        User user = new User();
+//        user.setUserId(1);
+//        user.setEmailId("dummy@dummy.com");
+//        user.setPassword("password");
+//
+//        System.out.println(user);
+//
+//        /**
+//         * Your output should be similar to this.
+//         * User{userId=1, emailId='dummy@dummy.com', password='password'}
+//         */
+//    }
 }

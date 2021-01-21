@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LogWriter {
 
-    public static void writeLog(String logMessage, String path) {
+    public static void writeLog(String logMessage, String path){
         LocalDateTime localDateTime = LocalDateTime.now();
         String date = localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String timeStamp = localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
